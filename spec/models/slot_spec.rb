@@ -5,6 +5,7 @@ RSpec.describe Slot, type: :model do
   it { should validate_presence_of(:to) }
   it { should validate_presence_of(:formation_size) }
   it { should validate_presence_of(:formation_type) }
+  it { should validate_presence_of(:formation_quantity) }
 
   describe "#active?" do
     it "should not be active if from is after now" do

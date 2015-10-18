@@ -25,6 +25,7 @@ class SlotsController < ApplicationController
 
   private
   def slot_params
-    params.require(:slot).permit(:from, :to, :formation_size, :formation_type)
+    params.require(:slot).permit(:from, :to, :formation_size, :formation_type,
+                                :formation_quantity)
   end
 end

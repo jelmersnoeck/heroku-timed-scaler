@@ -6,7 +6,9 @@ class Slot < ActiveRecord::Base
   enum formation_size: FORMATION_SIZES
 
   ### Validation
-  validates :from, :to, :formation_size, :formation_type, presence: true
+  validates :from, :to, :formation_size, :formation_type, :formation_quantity,
+    presence: true
+  validates :formation_quantity, numericality: { greater_than: 0 }
 
   ### Scopes
   scope :scheduled, -> {

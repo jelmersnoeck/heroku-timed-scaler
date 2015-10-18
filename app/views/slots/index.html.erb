@@ -10,8 +10,9 @@
       <tr>
         <th>From</th>
         <th>To</th>
-        <th>Formation type</th>
-        <th>Formation size</th>
+        <th>type</th>
+        <th>size</th>
+        <th>quantity</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -22,6 +23,7 @@
         <td><%= slot.to %></td>
         <td><%= slot.formation_type %></td>
         <td><%= slot.formation_size %></td>
+        <td><%= slot.formation_quantity %></td>
         <td>
           <% if !slot.cancelled? %>
             <%= button_to "CANCEL", slot_path(slot), method: :delete, class: 'btn red darken-4' %>
