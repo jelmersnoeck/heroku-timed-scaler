@@ -18,7 +18,8 @@ class SlotsController < ApplicationController
   end
 
   def destroy
-    Slot.find(params[:id]).cancel!
+    slot = Slot.find(params[:id])
+    slot.cancel! if slot.deletable?
 
     redirect_to root_path
   end
