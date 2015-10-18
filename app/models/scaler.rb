@@ -15,12 +15,11 @@ class Scaler
 
   def scale!
     return false if !@slot.scaleable?
+    Scaler.delay_until(@slot.to).reset(@slot.id)
 
     # Get current scale
     # Save current scale on slot
     # Scale Heroku
-
-    Scaler.delay_until(@slot.to).reset(@slot.id)
   end
 
   def reset!

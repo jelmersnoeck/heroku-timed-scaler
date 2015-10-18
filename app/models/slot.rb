@@ -16,6 +16,9 @@ class Slot < ActiveRecord::Base
     where("slots.to > ? ", Time.now())
   }
 
+  ### Callbacks
+  after_commit :schedule!, on: :create
+
   ### Instance methods
   def cancel!
     self.update_attributes(cancelled: true)
