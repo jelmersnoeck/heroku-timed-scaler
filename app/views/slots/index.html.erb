@@ -1,0 +1,9 @@
+<% if @slots.any? %>
+  <% @slots.each do |slot| %>
+    <%= slot.from %> - <%= slot.to %>
+  <% end %>
+<% else %>
+  No slots yet<br>
+<% end %>
+
+<%= link_to "New slot", new_slot_path %>

@@ -1,0 +1,36 @@
+<%= form_for(@slot) do |f| %>
+  <% if @slot.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@slot.errors.count, "error") %> prohibited this post from being saved:</h2>
+    <ul>
+    <% @slot.errors.full_messages.each do |msg| %>
+    <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :from %>
+    <%= f.date_field :from %>
+  </div>
+
+  <div class="field">
+    <%= f.label :to %>
+    <%= f.date_field :to %>
+  </div>
+
+  <div class="field">
+    <%= f.label :formation_size %>
+    <%= f.select :formation_size, Slot::FORMATION_SIZES.map { |s| [s, s] } %>
+  </div>
+
+  <div class="field">
+    <%= f.label :formation_type %>
+    <%= f.text_field :formation_type %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
