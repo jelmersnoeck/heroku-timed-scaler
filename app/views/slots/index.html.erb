@@ -17,7 +17,7 @@
     </thead>
     <tbody>
     <% @slots.each do |slot| %>
-      <tr <% if slot.cancelled? %>class="red lighten-4"<% end %>>
+      <tr class="<% if slot.cancelled? %>red lighten-4<% elsif slot.active? %>green lighten-3<% end %>">
         <td><%= slot.from %></td>
         <td><%= slot.to %></td>
         <td><%= slot.formation_type %></td>
