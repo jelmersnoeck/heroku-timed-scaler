@@ -16,6 +16,7 @@ class Slot < ActiveRecord::Base
     where("slots.to > ? ", Time.now())
   }
 
+  ### Instance methods
   def cancel!
     self.update_attributes(cancelled: true)
   end
@@ -26,6 +27,20 @@ class Slot < ActiveRecord::Base
 
   def deletable?
     !cancelled? && !active?
+  end
+
+  def scaleable?
+    Time.now >= from && Time.now < to && formation_initial_size.nil? &&
+      formation_initial_quantity.nil?
+  end
+
+  def resetable?
+    Time.now >= to && !formation_initial_size.nil? &&
+      !formation_initial_quantity.nil?
+  end
+
+  def schedule!
+    Scaler.delay_until(from).scale(id)
   end
 
   private

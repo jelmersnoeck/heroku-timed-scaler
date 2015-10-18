@@ -62,6 +62,97 @@ RSpec.describe Slot, type: :model do
     end
   end
 
+  describe "#scaleable?" do
+    it "should not be scaleable if we're before the from time" do
+      @slot = FactoryGirl.create(:slot, :future)
+
+      expect(@slot.scaleable?).to be false
+    end
+
+    it "should not be scaleable if we're after the to time" do
+      @slot = FactoryGirl.create(:slot, :passed)
+
+      expect(@slot.scaleable?).to be false
+    end
+
+    it "should not be scaleable if there's an initial size" do
+      @slot = FactoryGirl.create(
+        :slot,
+        :active,
+        formation_initial_size: "hobby"
+      )
+
+      expect(@slot.scaleable?).to be false
+    end
+
+    it "should not be scaleable if there's an initial quantity" do
+      @slot = FactoryGirl.create(
+        :slot,
+        :active,
+        formation_initial_quantity: 3
+      )
+
+      expect(@slot.scaleable?).to be false
+    end
+
+    it "should be scaleable if it's within the period and no initial values have been set" do
+      @slot = FactoryGirl.create(:slot, :active)
+
+      expect(@slot.scaleable?).to be true
+    end
+  end
+
+  describe "#resetable?" do
+    it "should not be resetable if it's before the to time" do
+      @slot = FactoryGirl.create(:slot, to: 1.minute.ago)
+
+      expect(@slot.scaleable?).to be false
+    end
+
+    it "should not be resetable if there is no initial size" do
+      @slot = FactoryGirl.create(
+        :slot,
+        :passed,
+        :scaled,
+        formation_initial_size: nil
+      )
+
+      expect(@slot.resetable?).to be false
+    end
+
+    it "should not be resetable if there is not initial quantity" do
+      @slot = FactoryGirl.create(
+        :slot,
+        :passed,
+        :scaled,
+        formation_initial_quantity: nil
+      )
+
+      expect(@slot.resetable?).to be false
+    end
+
+    it "should be resetable if it's before the end time and has initial values" do
+      @slot = FactoryGirl.create(:slot, :scaled, :passed)
+
+      expect(@slot.resetable?).to be true
+    end
+  end
+
+  describe "#schedule!" do
+    before do
+      @slot = FactoryGirl.create(:slot)
+    end
+
+    it "should delay a scaled job" do
+      scaler = double(Scaler)
+      expect(scaler).to receive(:scale).once.with(@slot.id)
+      expect(Scaler).to receive(:delay_until).once.with(@slot.from).
+        and_return(scaler)
+
+      @slot.schedule!
+    end
+  end
+
   describe "#deletable?" do
     it "should not be deletable if the slot is active but not cancelled" do
       slot = FactoryGirl.build_stubbed(:slot)
