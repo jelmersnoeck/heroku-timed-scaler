@@ -1,6 +1,6 @@
 class SlotsController < ApplicationController
   def index
-    @slots = Slot.all
+    @slots = Slot.scheduled
   end
 
   def new
