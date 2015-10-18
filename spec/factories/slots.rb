@@ -6,6 +6,7 @@ FactoryGirl.define do
     formation_size 1
     formation_initial_size "hobby"
     formation_type "web"
+    formation_quantity 2
 
     trait :cancelled do
       cancelled true
