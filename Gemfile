@@ -32,6 +32,7 @@ gem 'puma'
 
 # Sidekiq for worker
 gem 'sidekiq'
+gem 'sinatra', require: nil
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
