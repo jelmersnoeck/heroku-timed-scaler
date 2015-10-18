@@ -7,6 +7,61 @@ RSpec.describe Slot, type: :model do
   it { should validate_presence_of(:formation_type) }
   it { should validate_presence_of(:formation_quantity) }
 
+  describe "time type validation" do
+    before do
+      FactoryGirl.create(
+        :slot,
+        from: 2.days.ago,
+        to: 2.days.from_now,
+        formation_type: 'web'
+      )
+    end
+
+    it "should not create a new slot that starts within an existing slot" do
+      slot = FactoryGirl.build(
+        :slot,
+        from: 1.days.ago,
+        to: 5.days.from_now,
+        formation_type: 'web'
+      )
+
+      expect(slot.valid?).to be false
+    end
+
+    it "should not create a new slot that ends within an existing slot" do
+      slot = FactoryGirl.build(
+        :slot,
+        from: 5.days.ago,
+        to: 1.days.from_now,
+        formation_type: 'web'
+      )
+
+      expect(slot.valid?).to be false
+    end
+
+    it "should not create a new slot that begins and ends within an existing slot" do
+      slot = FactoryGirl.build(
+        :slot,
+        from: 1.days.ago,
+        to: 1.days.from_now,
+        formation_type: 'web'
+      )
+
+      expect(slot.valid?).to be false
+    end
+
+    it "should create a new slot from a different formation type" do
+      slot = FactoryGirl.build(
+        :slot,
+        from: 1.days.ago,
+        to: 1.days.from_now,
+        formation_type: 'worker'
+      )
+
+      expect(slot.valid?).to be true
+    end
+  end
+
   describe "#active?" do
     it "should not be active if from is after now" do
       @slot = FactoryGirl.create(:slot, :future)
@@ -42,7 +97,7 @@ RSpec.describe Slot, type: :model do
   describe "scopes" do
     describe ".scheduled" do
       before do
-        @slot1 = FactoryGirl.create(:slot, from: 2.days.ago, to: 1.day.ago)
+        @slot1 = FactoryGirl.create(:slot, from: 5.days.ago, to: 3.day.ago)
         @slot2 = FactoryGirl.create(:slot, from: 2.days.ago, to: 1.day.from_now)
       end
 
