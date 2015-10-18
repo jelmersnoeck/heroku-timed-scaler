@@ -24,6 +24,10 @@ class Slot < ActiveRecord::Base
     from <= Time.now && to >= Time.now
   end
 
+  def deletable?
+    !cancelled? && !active?
+  end
+
   private
   def unique_type_period
     from_check = Slot.where(from: from..to, formation_type: formation_type).any?

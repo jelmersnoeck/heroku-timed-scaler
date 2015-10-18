@@ -62,6 +62,32 @@ RSpec.describe Slot, type: :model do
     end
   end
 
+  describe "#deletable?" do
+    it "should not be deletable if the slot is active but not cancelled" do
+      slot = FactoryGirl.build_stubbed(:slot)
+      allow(slot).to receive(:active?).and_return(true)
+      allow(slot).to receive(:cancelled?).and_return(false)
+
+      expect(slot.deletable?).to be false
+    end
+
+    it "should not be deletable if the slot is not active but cancelled" do
+      slot = FactoryGirl.build_stubbed(:slot)
+      allow(slot).to receive(:active?).and_return(false)
+      allow(slot).to receive(:cancelled?).and_return(true)
+
+      expect(slot.deletable?).to be false
+    end
+
+    it "should not be deletable if the slot is not active and not cancelled" do
+      slot = FactoryGirl.build_stubbed(:slot)
+      allow(slot).to receive(:active?).and_return(false)
+      allow(slot).to receive(:cancelled?).and_return(false)
+
+      expect(slot.deletable?).to be true
+    end
+  end
+
   describe "#active?" do
     it "should not be active if from is after now" do
       @slot = FactoryGirl.create(:slot, :future)
