@@ -1,9 +1,36 @@
+<div class="row">
+  <br>
+  <%= link_to "New slot", new_slot_path, class: 'btn' %>
+  <%= link_to "Import slots", new_slot_path, class: 'btn' %>
+</div>
+
 <% if @slots.any? %>
-  <% @slots.each do |slot| %>
-    <%= slot.from %> - <%= slot.to %>
-  <% end %>
+  <table>
+    <thead>
+      <tr>
+        <th>From</th>
+        <th>To</th>
+        <th>Formation type</th>
+        <th>Formation size</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @slots.each do |slot| %>
+      <tr <% if slot.cancelled? %>class="red lighten-4"<% end %>>
+        <td><%= slot.from %></td>
+        <td><%= slot.to %></td>
+        <td><%= slot.formation_type %></td>
+        <td><%= slot.formation_size %></td>
+        <td>
+          <% if !slot.cancelled? %>
+            <%= button_to "CANCEL", slot_path(slot), method: :delete, class: 'btn red darken-4' %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
 <% else %>
   No slots yet<br>
 <% end %>
-
-<%= link_to "New slot", new_slot_path %>

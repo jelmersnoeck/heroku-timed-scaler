@@ -7,4 +7,8 @@ class Slot < ActiveRecord::Base
 
   ### Validation
   validates :from, :to, :formation_size, :formation_type, presence: true
+
+  def cancel!
+    self.update_attributes(cancelled: true)
+  end
 end
