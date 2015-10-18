@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151018190131) do
+ActiveRecord::Schema.define(version: 20151018210828) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,9 +23,10 @@ ActiveRecord::Schema.define(version: 20151018190131) do
     t.integer  "formation_size"
     t.string   "formation_initial_size"
     t.string   "formation_type"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.integer  "formation_quantity"
+    t.integer  "formation_initial_quantity"
   end
 
 end
