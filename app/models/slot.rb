@@ -8,6 +8,11 @@ class Slot < ActiveRecord::Base
   ### Validation
   validates :from, :to, :formation_size, :formation_type, presence: true
 
+  ### Scopes
+  scope :scheduled, -> {
+    where("slots.to > ? ", Time.now())
+  }
+
   def cancel!
     self.update_attributes(cancelled: true)
   end

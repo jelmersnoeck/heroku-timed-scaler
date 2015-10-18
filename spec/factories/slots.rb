@@ -1,11 +1,14 @@
 FactoryGirl.define do
   factory :slot do
-    from "2015-10-18 15:04:07"
-to "2015-10-18 15:04:07"
-cancelled ""
-formation_size 1
-formation_initial_size 1
-formation_type "MyString"
-  end
+    from { Time.now }
+    to { 1.day.from_now }
+    cancelled false
+    formation_size 1
+    formation_initial_size "hobby"
+    formation_type "web"
 
+    trait :cancelled do
+      cancelled true
+    end
+  end
 end
