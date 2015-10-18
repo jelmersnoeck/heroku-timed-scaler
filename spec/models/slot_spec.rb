@@ -6,6 +6,26 @@ RSpec.describe Slot, type: :model do
   it { should validate_presence_of(:formation_size) }
   it { should validate_presence_of(:formation_type) }
 
+  describe "#active?" do
+    it "should not be active if from is after now" do
+      @slot = FactoryGirl.create(:slot, :future)
+
+      expect(@slot.active?).to be false
+    end
+
+    it "should not be active if to is before now" do
+      @slot = FactoryGirl.create(:slot, :passed)
+
+      expect(@slot.active?).to be false
+    end
+
+    it "should be active if from is before now and to is after now" do
+      @slot = FactoryGirl.create(:slot, :active)
+
+      expect(@slot.active?).to be true
+    end
+  end
+
   describe "#cancel!" do
     before do
       @slot = FactoryGirl.create(:slot)

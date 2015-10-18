@@ -16,4 +16,8 @@ class Slot < ActiveRecord::Base
   def cancel!
     self.update_attributes(cancelled: true)
   end
+
+  def active?
+    from <= Time.now && to >= Time.now
+  end
 end
