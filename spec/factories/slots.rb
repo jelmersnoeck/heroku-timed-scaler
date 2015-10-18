@@ -4,7 +4,6 @@ FactoryGirl.define do
     to { 1.day.from_now }
     cancelled false
     formation_size 1
-    formation_initial_size "hobby"
     formation_type "web"
     formation_quantity 2
 
@@ -25,6 +24,11 @@ FactoryGirl.define do
     trait :active do
       from { 2.days.ago }
       to { 1.day.from_now }
+    end
+
+    trait :scaled do
+      formation_initial_quantity 3
+      formation_initial_size "hobby"
     end
   end
 end
