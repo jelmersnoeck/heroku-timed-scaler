@@ -34,6 +34,9 @@ gem 'puma'
 gem 'sidekiq'
 gem 'sinatra', require: nil
 
+# Heroku
+gem 'platform-api'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
