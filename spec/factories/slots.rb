@@ -3,7 +3,7 @@ FactoryGirl.define do
     from { Time.now }
     to { 1.day.from_now }
     cancelled false
-    formation_size 1
+    formation_size 3
     formation_type "web"
     formation_quantity 2
 

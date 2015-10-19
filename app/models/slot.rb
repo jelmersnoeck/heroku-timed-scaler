@@ -10,6 +10,7 @@ class Slot < ActiveRecord::Base
     presence: true
   validates :formation_quantity, numericality: { greater_than: 0 }
   validate :unique_type_period, on: :create
+  validate :correct_size_quantity
 
   ### Scopes
   scope :scheduled, -> {
@@ -22,6 +23,13 @@ class Slot < ActiveRecord::Base
   ### Instance methods
   def cancel!
     self.update_attributes(cancelled: true)
+  end
+
+  def set_initial_values(size, quantity)
+    self.update_attributes(
+      formation_initial_size: size,
+      formation_initial_quantity: quantity
+    )
   end
 
   def active?
@@ -59,6 +67,12 @@ class Slot < ActiveRecord::Base
 
     if from_check || to_check || check
       errors.add(:base, "There is already an active slot within the given time for this formation type.")
+    end
+  end
+
+  def correct_size_quantity
+    if ['free', 'hobby'].include?(formation_size) && formation_quantity > 1
+      errors.add(:formation_quantity, "can only be 1 for #{formation_size}.")
     end
   end
 end

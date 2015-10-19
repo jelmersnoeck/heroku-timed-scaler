@@ -7,6 +7,34 @@ RSpec.describe Slot, type: :model do
   it { should validate_presence_of(:formation_type) }
   it { should validate_presence_of(:formation_quantity) }
 
+  describe "formation size-quantity validation" do
+    it "'free' size can only have quantity 1" do
+      slot = FactoryGirl.build(
+        :slot,
+        formation_size: 'free',
+        formation_quantity: 5
+      )
+
+      expect(slot.valid?).to be false
+
+      slot.formation_quantity = 1
+      expect(slot.valid?).to be true
+    end
+
+    it "'hobby' size can only have quantity 1" do
+      slot = FactoryGirl.build(
+        :slot,
+        formation_size: 'hobby',
+        formation_quantity: 5
+      )
+
+      expect(slot.valid?).to be false
+
+      slot.formation_quantity = 1
+      expect(slot.valid?).to be true
+    end
+  end
+
   describe "time type validation" do
     before do
       FactoryGirl.create(
@@ -59,6 +87,19 @@ RSpec.describe Slot, type: :model do
       )
 
       expect(slot.valid?).to be true
+    end
+  end
+
+  describe "#set_initial_values" do
+    before do
+      @slot = FactoryGirl.create(:slot)
+    end
+
+    it "should update the quantity and size" do
+      @slot.set_initial_values("standard-1x", 5)
+
+      expect(@slot.reload.formation_initial_size).to eq("standard-1x")
+      expect(@slot.reload.formation_initial_quantity).to eq(5)
     end
   end
 
