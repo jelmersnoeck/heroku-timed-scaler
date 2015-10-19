@@ -17,3 +17,11 @@ Scale your Heroku apps on a time slot base.
 - Set env variables:
   - HEROKU_OAUTH: your oauth token
   - HEROKU_APP_NAME: the application that you want to scale
+
+## TODO
+
+- Multiple app support
+- Activity checks in workers (retries etc.)
+- CSV import
+- Install script
+- Add ENV for additional extra time (scale 15 min before timeslot)
