@@ -1,5 +1,7 @@
 # Heroku Timed Scaler
 
+[![TravisCI](https://travis-ci.org/jelmersnoeck/heroku-timed-scaler.svg)](https://travis-ci.org/jelmersnoeck/heroku-timed-scaler)
+
 Scale your Heroku apps on a time slot base.
 
 ![Preview](https://cdn-images-1.medium.com/max/800/1*O5wHwkbz3bpo0ksKgxilgQ.png)
