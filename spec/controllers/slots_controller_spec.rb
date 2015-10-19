@@ -27,7 +27,7 @@ RSpec.describe SlotsController, type: :controller do
     it "should create a new item" do
       attributes = FactoryGirl.attributes_for(:slot, :future)
       # attributes_for returns an int, need the value
-      attributes[:formation_size] = Slot::FORMATION_SIZES.first
+      attributes[:formation_size] = Slot::FORMATION_SIZES[3]
 
       expect {
         post :create, slot: attributes
