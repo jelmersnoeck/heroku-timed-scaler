@@ -7,11 +7,11 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: heroku_scheduler_development
+  database: heroku_timed_scaler_development
   pool: 5
 
 test:
   adapter: postgresql
   encoding: unicode
-  database: heroku_scheduler_test
+  database: heroku_timed_scaler_test
   pool: 5
