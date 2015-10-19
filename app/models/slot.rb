@@ -9,7 +9,7 @@ class Slot < ActiveRecord::Base
   validates :from, :to, :formation_size, :formation_type, :formation_quantity,
     presence: true
   validates :formation_quantity, numericality: { greater_than: 0 }
-  validate :unique_type_period
+  validate :unique_type_period, on: :create
 
   ### Scopes
   scope :scheduled, -> {
