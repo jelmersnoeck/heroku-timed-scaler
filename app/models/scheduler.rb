@@ -1,18 +1,7 @@
 class Scheduler
   ### Class methods
   def self.schedule(time, type = :up)
-    scaling_time = 0
-    if !ENV['SCALING_TIME'].blank?
-      scaling_time = ENV['SCALING_TIME'].to_i
-    end
-
-    if type == :down
-      time += scaling_time.minutes
-    else
-      time -= scaling_time.minutes
-    end
-
-    Scheduler.delay_until(time)
+    Scheduler.delay_until(time + Scheduler.delay(type))
   end
 
   def self.scale(id)
@@ -21,6 +10,17 @@ class Scheduler
 
   def self.reset(id)
     new(Slot.find(id)).reset!
+  end
+
+  def self.delay(type = :up)
+    scaling_time = 0
+    if !ENV['SCALING_TIME'].blank?
+      scaling_time = ENV['SCALING_TIME'].to_i
+    end
+
+    # If we're scaling up, we want to scale before the actual time
+    scaling_time = scaling_time * -1 if type == :up
+    scaling_time.minutes
   end
 
   ### Instance methods

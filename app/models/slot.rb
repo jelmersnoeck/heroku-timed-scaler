@@ -55,12 +55,23 @@ class Slot < ActiveRecord::Base
 
   private
   def unique_type_period
-    from_check = Slot.where(from: from..to, formation_type: formation_type).any?
-    to_check = Slot.where(to: from..to, formation_type: formation_type).any?
+    return unless from.present? && to.present?
+
+    delayed_from = from + Scheduler.delay(:up)
+    delayed_to = to + Scheduler.delay(:down)
+
+    from_check = Slot.where(
+      from: delayed_from..delayed_to,
+      formation_type: formation_type
+    ).any?
+    to_check = Slot.where(
+      to: delayed_from..delayed_to,
+      formation_type: formation_type
+    ).any?
     check = Slot.where(
       "slots.from <= ? AND slots.to >= ? AND slots.formation_type = ?",
-      from,
-      to,
+      delayed_from,
+      delayed_to,
       formation_type
     ).any?
 

@@ -89,6 +89,59 @@ RSpec.describe Slot, type: :model do
 
       expect(slot.valid?).to be true
     end
+
+  end
+
+  describe "timeslot validation with scaling times" do
+    before do
+      ENV['SCALING_TIME'] = "15"
+
+      FactoryGirl.create(
+        :slot,
+        from: 1.day.from_now + 1.hour,
+        to: 2.days.from_now + 1.hour
+      )
+    end
+
+    after do
+      ENV['SCALING_TIME'] = nil
+    end
+
+    it "should be invalid if it ends within scaling time of another slot" do
+      slot = FactoryGirl.build(
+        :slot,
+        from: 1.day.from_now - 5.hours,
+        to: 1.days.from_now + 50.minutes
+      )
+
+      expect(slot.valid?).to be false
+
+      slot = FactoryGirl.build(
+        :slot,
+        from: 1.day.from_now - 5.hours,
+        to: 1.days.from_now + 30.minutes
+      )
+
+      expect(slot.valid?).to be true
+    end
+
+    it "should be invalid if it starts within scaling time of another slot" do
+      slot = FactoryGirl.build(
+        :slot,
+        from: 2.days.from_now + 70.minutes,
+        to: 3.days.from_now
+      )
+
+      expect(slot.valid?).to be false
+
+      slot = FactoryGirl.build(
+        :slot,
+        from: 2.days.from_now + 76.minutes,
+        to: 3.days.from_now
+      )
+
+      expect(slot.valid?).to be true
+    end
   end
 
   describe "#set_initial_values" do
