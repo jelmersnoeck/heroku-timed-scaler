@@ -25,3 +25,4 @@ Scale your Heroku apps on a time slot base.
 - CSV import
 - Install script
 - Add ENV for additional extra time (scale 15 min before timeslot)
+- HTTP Basic Auth
