@@ -45,11 +45,18 @@ RSpec.describe Scheduler do
         ENV['SCALING_TIME'] = nil
       end
 
-      it "should pass through the time with scaling time added" do
+      it "should pass through the time with scaling time subtracted when scaling up" do
+        date = 1.day.from_now
+
+        expect(Scheduler).to receive(:delay_until).with(date - 5.minutes)
+        Scheduler.schedule(date)
+      end
+
+      it "should pass through the time with scaling time added when scaling down" do
         date = 1.day.from_now
 
         expect(Scheduler).to receive(:delay_until).with(date + 5.minutes)
-        Scheduler.schedule(date)
+        Scheduler.schedule(date, :down)
       end
     end
   end
@@ -93,7 +100,8 @@ RSpec.describe Scheduler do
 
         scheduler = double(Scheduler)
         expect(scheduler).to receive(:reset).once.with(@slot.id)
-        expect(Scheduler).to receive(:schedule).and_return(scheduler)
+        expect(Scheduler).to receive(:schedule).with(@slot.to, :down).
+          and_return(scheduler)
 
         @scheduler.scale!
       end

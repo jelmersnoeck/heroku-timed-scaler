@@ -1,12 +1,18 @@
 class Scheduler
   ### Class methods
-  def self.schedule(time)
+  def self.schedule(time, type = :up)
     scaling_time = 0
     if !ENV['SCALING_TIME'].blank?
       scaling_time = ENV['SCALING_TIME'].to_i
     end
 
-    Scheduler.delay_until(time + scaling_time.minutes)
+    if type == :down
+      time += scaling_time.minutes
+    else
+      time -= scaling_time.minutes
+    end
+
+    Scheduler.delay_until(time)
   end
 
   def self.scale(id)
@@ -30,7 +36,7 @@ class Scheduler
 
     scaler.scale_to(slot.formation_size, slot.formation_quantity)
 
-    Scheduler.schedule(@slot.to).reset(@slot.id)
+    Scheduler.schedule(@slot.to, :down).reset(@slot.id)
   end
 
   def reset!
