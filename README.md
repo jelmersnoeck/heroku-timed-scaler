@@ -84,6 +84,28 @@ from, to, formation_type, formation_size, formation_quantity
 "2015-10-24 15:30", "2015-10-24 16:30", "web", "standard-2x", 4
 ```
 
+## Contributing
+
+1. Fork it
+2. Create your feature branch (git checkout -b my-new-feature)
+3. Commit your changes (git commit -am 'Add some feature')
+4. Run the tests (and make sure they pass)
+5. Push to the branch (git push origin my-new-feature)
+6. Create new Pull Request
+
 ## TODO
 
-- Multiple app support
+### Multi app support
+
+At the moment, you can only scale one application. I'd like to implement a way
+where you can specify multiple applications which you can scale individually.
+
+### Formation Type validation
+
+At the moment, the formation type is a wildcard field. This should not be the
+case. When creating new Slots, we should validate with Heroku that this type
+of formation actually exists or not.
+
+The reason why `web` and `worker` - the 2 most used formation types - are not
+hardcoded is that you could actually use different names for these, like
+`urgentworker`.
