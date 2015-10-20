@@ -32,9 +32,9 @@ class Scheduler
     return false if !@slot.scaleable?
 
     formation = scaler.current_scale
-    slot.set_initial_values(formation["size"].downcase, formation["quantity"])
-
     scaler.scale_to(slot.formation_size, slot.formation_quantity)
+
+    slot.set_initial_values(formation["size"].downcase, formation["quantity"])
 
     Scheduler.schedule(@slot.to, :down).reset(@slot.id)
   end
