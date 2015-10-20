@@ -15,32 +15,29 @@ class Scheduler
 
   def scale!
     return false if !@slot.scaleable?
-    Scheduler.delay_until(@slot.to).reset(@slot.id)
 
-    formation = heroku.formation.info(app_name, slot.formation_type)
+    formation = scaler.current_scale
     slot.set_initial_values(formation["size"].downcase, formation["quantity"])
-    heroku.formation.update(app_name, slot.formation_type, {
-      quantity: slot.formation_quantity,
-      size: slot.formation_size
-    })
+
+    scaler.scale_to(slot.formation_size, slot.formation_quantity)
+
+    Scheduler.delay_until(@slot.to).reset(@slot.id)
   end
 
   def reset!
     return false if !@slot.resetable?
 
-    heroku.formation.update(app_name, slot.formation_type, {
-      quantity: slot.formation_initial_quantity,
-      size: slot.formation_initial_size
-    })
+    scaler.scale_to(slot.formation_initial_size, slot.formation_initial_quantity)
   end
 
   private
-  def heroku
-    @_heroku ||= PlatformAPI.connect_oauth(ENV['HEROKU_OAUTH'])
-  end
 
   def slot
     @slot
+  end
+
+  def scaler
+    @_scaler ||= Scaler.new(app_name, slot.formation_type)
   end
 
   def app_name
