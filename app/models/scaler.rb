@@ -3,7 +3,7 @@ class Scaler
     @app_name, @type = app_name, type
   end
 
-  def scale_to(type, size, quantity)
+  def scale_to(size, quantity)
     heroku.formation.update(@app_name, @type, { size: size, quantity: quantity })
   end
 
