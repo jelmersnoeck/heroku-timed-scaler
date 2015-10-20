@@ -26,6 +26,34 @@ RSpec.describe Scheduler do
     end
   end
 
+  describe ".schedule" do
+    describe "without env set" do
+      it "should pass through the time" do
+        date = 1.day.from_now
+
+        expect(Scheduler).to receive(:delay_until).with(date)
+        Scheduler.schedule(date)
+      end
+    end
+
+    describe "with env set" do
+      before do
+        ENV['SCALING_TIME'] = '5'
+      end
+
+      after do
+        ENV['SCALING_TIME'] = nil
+      end
+
+      it "should pass through the time with scaling time added" do
+        date = 1.day.from_now
+
+        expect(Scheduler).to receive(:delay_until).with(date + 5.minutes)
+        Scheduler.schedule(date)
+      end
+    end
+  end
+
   describe "#scale!" do
     before do
       @scheduler = Scheduler.new(@slot)
@@ -65,7 +93,7 @@ RSpec.describe Scheduler do
 
         scheduler = double(Scheduler)
         expect(scheduler).to receive(:reset).once.with(@slot.id)
-        expect(Scheduler).to receive(:delay_until).and_return(scheduler)
+        expect(Scheduler).to receive(:schedule).and_return(scheduler)
 
         @scheduler.scale!
       end

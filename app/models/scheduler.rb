@@ -1,5 +1,14 @@
 class Scheduler
   ### Class methods
+  def self.schedule(time)
+    scaling_time = 0
+    if !ENV['SCALING_TIME'].blank?
+      scaling_time = ENV['SCALING_TIME'].to_i
+    end
+
+    Scheduler.delay_until(time + scaling_time.minutes)
+  end
+
   def self.scale(id)
     new(Slot.find(id)).scale!
   end
@@ -21,7 +30,7 @@ class Scheduler
 
     scaler.scale_to(slot.formation_size, slot.formation_quantity)
 
-    Scheduler.delay_until(@slot.to).reset(@slot.id)
+    Scheduler.schedule(@slot.to).reset(@slot.id)
   end
 
   def reset!
