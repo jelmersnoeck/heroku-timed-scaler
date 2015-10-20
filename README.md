@@ -73,7 +73,17 @@ Auth in front.
 $ heroku config:set HTTP_AUTH_USER=<USERNAME> HTTP_AUTH_PASS=<PASSWORD>
 ```
 
+## CSV Import
+
+You can import CSV files as a way to upload multiple time slots in one go.
+
+### Format
+
+```
+from, to, formation_type, formation_size, formation_quantity
+"2015-10-24 15:30", "2015-10-24 16:30", "web", "standard-2x", 4
+```
+
 ## TODO
 
-- CSV import
 - Multiple app support

@@ -72,4 +72,35 @@ RSpec.describe SlotsController, type: :controller do
       expect(response).to redirect_to(root_path)
     end
   end
+
+  describe "GET#upload_csv" do
+    it "should render upload_csv" do
+      get :upload_csv
+
+      expect(response.status).to eq(200)
+      expect(response).to render_template(:upload_csv)
+    end
+  end
+
+  describe "POST#import" do
+    it "should use the importer to import data" do
+      file = fixture_file_upload("correct_timeslot.csv", "application/csv")
+
+      expect {
+        post :import, upload: { csv: file }
+      }.to change { Slot.count }.by 3
+
+      expect(response).to redirect_to(root_path)
+    end
+
+    it "should render the upload_csv page if importer is not valid" do
+      file = fixture_file_upload("wrong_timeslot.csv", "application/csv")
+
+      expect {
+        post :import, upload: { csv: file }
+      }.to change { Slot.count }.by 0
+
+      expect(response).to render_template(:upload_csv)
+    end
+  end
 end

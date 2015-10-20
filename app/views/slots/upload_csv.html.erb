@@ -1,0 +1,32 @@
+<div class="row">
+  <br>
+  <%= form_for(:upload, url: import_slots_path, method: :post, html: { class: 'col s12' }) do |f| %>
+    <% if @errors %>
+      <ul>
+      <% @slots.each_with_index do |slot, index| %>
+        <% next unless slot.errors.any? %>
+        <li>Slot <%= index + 1 %>:
+          <ul>
+          <% slot.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+          </ul>
+        </li>
+      <% end %>
+      </ul>
+    <% end %>
+    <div class="file-field input-field">
+      <div class="btn">
+        <span>CSV File</span>
+        <%= f.file_field :csv %>
+      </div>
+      <div class="file-path-wrapper">
+        <input class="file-path validate" type="text">
+      </div>
+    </div>
+
+    <div class="actions">
+      <%= f.submit "Import time slots", class: 'btn' %>
+    </div>
+  <% end %>
+</div>
