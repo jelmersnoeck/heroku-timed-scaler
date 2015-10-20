@@ -75,7 +75,5 @@ $ heroku config:set HTTP_AUTH_USER=<USERNAME> HTTP_AUTH_PASS=<PASSWORD>
 
 ## TODO
 
-- Multiple app support
-- Activity checks in workers (retries etc.)
 - CSV import
-- Install script
+- Multiple app support
