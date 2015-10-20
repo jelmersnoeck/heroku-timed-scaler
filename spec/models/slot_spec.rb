@@ -185,10 +185,10 @@ RSpec.describe Slot, type: :model do
     end
 
     it "should delay a scaled job" do
-      scaler = double(Scaler)
-      expect(scaler).to receive(:scale).once.with(@slot.id)
-      expect(Scaler).to receive(:delay_until).once.with(@slot.from).
-        and_return(scaler)
+      scheduler = double(Scheduler)
+      expect(scheduler).to receive(:scale).once.with(@slot.id)
+      expect(Scheduler).to receive(:delay_until).once.with(@slot.from).
+        and_return(scheduler)
 
       @slot.schedule!
     end

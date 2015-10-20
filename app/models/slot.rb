@@ -51,7 +51,7 @@ class Slot < ActiveRecord::Base
   end
 
   def schedule!
-    Scaler.delay_until(from).scale(id)
+    Scheduler.delay_until(from).scale(id)
   end
 
   private

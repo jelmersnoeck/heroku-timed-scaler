@@ -1,4 +1,4 @@
-class Scaler
+class Scheduler
   ### Class methods
   def self.scale(id)
     new(Slot.find(id)).scale!
@@ -15,7 +15,7 @@ class Scaler
 
   def scale!
     return false if !@slot.scaleable?
-    Scaler.delay_until(@slot.to).reset(@slot.id)
+    Scheduler.delay_until(@slot.to).reset(@slot.id)
 
     formation = heroku.formation.info(app_name, slot.formation_type)
     slot.set_initial_values(formation["size"].downcase, formation["quantity"])
