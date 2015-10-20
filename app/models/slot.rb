@@ -2,13 +2,12 @@ class Slot < ActiveRecord::Base
   FORMATION_SIZES = ['free', 'hobby', 'standard-1x', 'standard-2x',
                      'performance-m', 'performance-l'].freeze
 
-  ### Enums
-  enum formation_size: FORMATION_SIZES
-
   ### Validation
   validates :from, :to, :formation_size, :formation_type, :formation_quantity,
     presence: true
   validates :formation_quantity, numericality: { greater_than: 0 }
+  validates_inclusion_of :formation_size, in: FORMATION_SIZES,
+    message: 'is not a valid formation size.'
   validate :unique_type_period, on: :create
   validate :correct_size_quantity
 
@@ -71,6 +70,8 @@ class Slot < ActiveRecord::Base
   end
 
   def correct_size_quantity
+    return if formation_size.nil? || formation_quantity.nil?
+
     if ['free', 'hobby'].include?(formation_size) && formation_quantity > 1
       errors.add(:formation_quantity, "can only be 1 for #{formation_size}.")
     end

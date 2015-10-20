@@ -6,6 +6,7 @@ RSpec.describe Slot, type: :model do
   it { should validate_presence_of(:formation_size) }
   it { should validate_presence_of(:formation_type) }
   it { should validate_presence_of(:formation_quantity) }
+  it { should validate_inclusion_of(:formation_size).in_array(Slot::FORMATION_SIZES) }
 
   describe "formation size-quantity validation" do
     it "'free' size can only have quantity 1" do
