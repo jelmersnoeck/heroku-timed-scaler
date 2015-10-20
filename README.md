@@ -82,6 +82,8 @@ You can import CSV files as a way to upload multiple time slots in one go.
 ```
 from, to, formation_type, formation_size, formation_quantity
 "2015-10-24 15:30", "2015-10-24 16:30", "web", "standard-2x", 4
+"2015-11-24 15:30", "2015-10-24 16:30", "web", "standard-2x", 4
+"2015-12-24 15:30", "2015-10-24 16:30", "web", "standard-2x", 4
 ```
 
 ## Contributing
