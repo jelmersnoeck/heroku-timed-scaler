@@ -47,6 +47,15 @@ wish to scale up.
 $ heroku config:set HEROKU_OAUTH=<TOKEN> HEROKU_APP_NAME=<APP_NAME>
 ```
 
+### HTTP Basic Auth
+
+If you want to protect your application, there's a simple way to put HTTP Basic
+Auth in front.
+
+```
+$ heroku config:set HTTP_AUTH_USER=<USERNAME> HTTP_AUTH_PASS=<PASSWORD>
+```
+
 ## TODO
 
 - Multiple app support
@@ -54,4 +63,3 @@ $ heroku config:set HEROKU_OAUTH=<TOKEN> HEROKU_APP_NAME=<APP_NAME>
 - CSV import
 - Install script
 - Add ENV for additional extra time (scale 15 min before timeslot)
-- HTTP Basic Auth
